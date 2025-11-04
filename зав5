@@ -1,0 +1,5 @@
+# 5) Видалити вузол, маючи лише вказівник на вузол (не останній)
+def deleteNode(node: ListNode) -> None:
+    node.val = node.next.val
+    node.next = node.next.next
+# Складність: O(1) / O(1).
