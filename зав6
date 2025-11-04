@@ -1,0 +1,34 @@
+# 6) Подвоїти число, представлене списком (найстарший розряд перший)
+# Розв’язок: розвернути -> пройти з перенесенням -> можливий додатковий старший розряд -> розвернути назад
+def doubleIt(head: Optional[ListNode]) -> Optional[ListNode]:
+    # reverse
+    prev, cur = None, head
+    while cur:
+        cur.next, prev, cur = prev, cur, cur.next
+    head_rev = prev
+    # double with carry
+    carry = 0
+    cur = head_rev
+    while cur:
+        s = cur.val * 2 + carry
+        cur.val, carry = s % 10, s // 10
+        if not cur.next and carry:
+            cur.next = ListNode(0)  # місце для потенційного розряду
+        cur = cur.next
+        if cur is None and carry:  # додати новий старший розряд у кінці розвернутого
+            tail = ListNode(carry)
+            # при попередньому кроці ми вже створили вузол, але на випадок:
+            if head_rev is None:
+                head_rev = tail
+            else:
+                # знайдемо останній (рідко викликається)
+                p = head_rev
+                while p.next: p = p.next
+                p.next = tail
+            carry = 0
+    # reverse back
+    prev, cur = None, head_rev
+    while cur:
+        cur.next, prev, cur = prev, cur, cur.next
+    return prev
+# Складність: O(n) / O(1).
