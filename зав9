@@ -1,0 +1,15 @@
+# 9) Розділити список відносно x (стабільно)
+def partition(head: Optional[ListNode], x: int) -> Optional[ListNode]:
+    less_dummy = less_tail = ListNode()
+    ge_dummy = ge_tail = ListNode()
+    cur = head
+    while cur:
+        nxt = cur.next; cur.next = None
+        if cur.val < x:
+            less_tail.next = cur; less_tail = cur
+        else:
+            ge_tail.next = cur; ge_tail = cur
+        cur = nxt
+    less_tail.next = ge_dummy.next
+    return less_dummy.next
+# Складність: O(n) / O(1).
