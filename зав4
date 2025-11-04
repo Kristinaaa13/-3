@@ -1,0 +1,20 @@
+# 4) Перевпорядкувати список: L0 → Ln → L1 → Ln-1 → ...
+# Кроки: (1) знайти середину, (2) розвернути другу половину, (3) злити чергуванням
+def reorderList(head: Optional[ListNode]) -> None:
+    if not head or not head.next: return
+    # 1) середина
+    slow = fast = head
+    while fast and fast.next:
+        slow = slow.next; fast = fast.next.next
+    # 2) reverse друга половина
+    prev, cur = None, slow.next
+    slow.next = None  # розірвати
+    while cur:
+        cur.next, prev, cur = prev, cur, cur.next
+    head2 = prev
+    # 3) merge чергуванням
+    p, q = head, head2
+    while q:
+        p.next, p = q, p.next
+        q.next, q = p, q.next
+# Складність: O(n) / O(1). Модифікує список in-place.
