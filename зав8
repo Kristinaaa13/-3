@@ -1,0 +1,24 @@
+# 8) Розвернути вузли в k-групах
+def reverseKGroup(head: Optional[ListNode], k: int) -> Optional[ListNode]:
+    # Перевірка, що попереду >= k вузлів
+    def kth(node, k):
+        while node and k:
+            node = node.next; k -= 1
+        return node  # повертає вузол після k-го (exclusive)
+    dummy = ListNode(0, head)
+    group_prev = dummy
+
+    while True:
+        kth_next = kth(group_prev, k)
+        if not kth_next: break
+        group_end = group_prev.next
+        # Реверс ділянки [group_prev.next, kth_next)
+        prev, cur = kth_next, group_prev.next
+        while cur is not kth_next:
+            cur.next, prev, cur = prev, cur, cur.next
+        # Зшити назад
+        tmp = group_prev.next
+        group_prev.next = prev
+        group_prev = tmp
+    return dummy.next
+# Складність: O(n) / O(1).
